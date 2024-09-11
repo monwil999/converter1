@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { currencies } from "../currencies";
 import { Result } from "./Result";
 import "./style.css";
@@ -6,6 +6,15 @@ import "./style.css";
 export const Form = ({ calculateResult, result }) => {
   const [currency, setCurrency] = useState(currencies[0].name);
   const [amount, setAmount] = useState("");
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 1000);
+
+    return () => clearInterval(timer); // Sprzątanie po zakończeniu
+  }, []);
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -16,6 +25,11 @@ export const Form = ({ calculateResult, result }) => {
     <form className="form" onSubmit={onSubmit}>
       Pola wymagane oznaczone są gwiazdką*.
       <fieldset className="form__fieldset">
+      <p>
+      Dzisiaj jest:{" "}
+          {currentDate.toLocaleDateString('pl-PL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}{" "}
+          {currentDate.toLocaleTimeString()}
+        </p>
         <legend className="form__legend">Kantor Walutowy</legend>
         <p>
           <label>
@@ -58,6 +72,6 @@ export const Form = ({ calculateResult, result }) => {
       </fieldset>
     </form>
   );
-};
+}
 
 export default Form;
