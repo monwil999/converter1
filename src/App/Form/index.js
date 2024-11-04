@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { currencies } from "../currencies";
 import { Result } from "./Result";
-import "./style.css";
-import { FormLabel, FormField, FormButton, FormFieldset, FormResult } from "./styled";
+import { FormLabel, FormField, FormButton, FormFieldset, FormResult, FormLegend } from "./styled";
+import { ClockStyle } from "../Clock/styled";
 
 export const Form = ({ calculateResult, result }) => {
   const [currency, setCurrency] = useState(currencies[0].name);
@@ -16,27 +16,26 @@ export const Form = ({ calculateResult, result }) => {
 
     return () => clearInterval(timer);
   }, []);
-
   const onSubmit = (event) => {
     event.preventDefault();
     calculateResult(currency, amount);
   };
-
+  const formatDate = (date) =>
+  date.toLocaleString("pl-PL", {
+    weekday: "long",
+    hour: "2-digit",
+    minute: "2-digit",
+    day: "numeric",
+    month: "long",
+  });
   return (
     <form className="form" onSubmit={onSubmit}>
       Pola wymagane oznaczone są gwiazdką*.
       <FormFieldset>
-        <p>
-          Dzisiaj jest:{" "}
-          {currentDate.toLocaleDateString("pl-PL", {
-            weekday: "long",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-          })}{" "}
-          {currentDate.toLocaleTimeString()}
-        </p>
-        <legend className="form__legend">Kantor Walutowy</legend>
+      <ClockStyle>
+          Dzisiaj jest: {formatDate(currentDate)}
+        </ClockStyle>
+        <FormLegend>Kantor Walutowy</FormLegend>
         <p>
           <FormLabel> Kwota w PLN* </FormLabel>
           <input

@@ -55,3 +55,13 @@ export const FormResult = styled.div`
     margin: auto;
     text-align: center;
 `;
+
+export const FormLegend = styled.div`
+    margin: auto;
+    text-align: center;
+    background-color: crimson;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+`;
