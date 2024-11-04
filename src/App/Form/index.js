@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { currencies } from "../currencies";
 import { Result } from "./Result";
 import "./style.css";
+import { FormLabel, FormField, FormButton, FormFieldset, FormResult } from "./styled";
 
 export const Form = ({ calculateResult, result }) => {
   const [currency, setCurrency] = useState(currencies[0].name);
@@ -13,7 +14,7 @@ export const Form = ({ calculateResult, result }) => {
       setCurrentDate(new Date());
     }, 1000);
 
-    return () => clearInterval(timer); // Sprzątanie po zakończeniu
+    return () => clearInterval(timer);
   }, []);
 
   const onSubmit = (event) => {
@@ -24,17 +25,20 @@ export const Form = ({ calculateResult, result }) => {
   return (
     <form className="form" onSubmit={onSubmit}>
       Pola wymagane oznaczone są gwiazdką*.
-      <fieldset className="form__fieldset">
-      <p>
-      Dzisiaj jest:{" "}
-          {currentDate.toLocaleDateString('pl-PL', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}{" "}
+      <FormFieldset>
+        <p>
+          Dzisiaj jest:{" "}
+          {currentDate.toLocaleDateString("pl-PL", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}{" "}
           {currentDate.toLocaleTimeString()}
         </p>
         <legend className="form__legend">Kantor Walutowy</legend>
         <p>
-          <label>
-            <span className="form__labelText"> Kwota w PLN* </span>
-          </label>
+          <FormLabel> Kwota w PLN* </FormLabel>
           <input
             value={amount}
             onChange={({ target }) => setAmount(target.value)}
@@ -47,11 +51,9 @@ export const Form = ({ calculateResult, result }) => {
           />
         </p>
         <p>
-          <label>
-            <span className="form__labelText"> Wybierz walutę </span>
-          </label>
-          <select
-            className="form_field"
+          <FormLabel> Wybierz walutę </FormLabel>
+          <FormField
+            as="select"
             value={currency}
             onChange={({ target }) => setCurrency(target.value)}
           >
@@ -60,18 +62,18 @@ export const Form = ({ calculateResult, result }) => {
                 {currency.name}
               </option>
             ))}
-          </select>
+          </FormField>
         </p>
         <p>
-          <button className="form__button" type="submit">
-            Przelicz
-          </button>
+          <FormButton>Przelicz</FormButton>
         </p>
-        <p className="form__result">Otrzymasz:</p>
-        <Result result={result} />
-      </fieldset>
+        <FormResult>
+          Otrzymasz:
+          <Result result={result} />
+        </FormResult>
+      </FormFieldset>
     </form>
   );
-}
+};
 
 export default Form;
