@@ -9,7 +9,7 @@
 Here's a simple calculator that allows you to quickly convert popular currencies. Currencies convert from PLN to EURO, USD and GBP.
 
 
-![Converter](Zrzut ekranu 2024-12-9 o 19.44.15.png)
+![Zrzut ekranu 2024-12-9 o 19.44.15.png](Zrzut ekranu 2024-12-9 o 19.44.15.png)
 
 ## Features
 
