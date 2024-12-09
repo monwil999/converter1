@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Here's a simple calculator that allows you to quickly convert popular currencies. Currencies convert from PLN to EURO, USD and GBP.
+Here's a simple calculator that allows you to quickly convert currencies. Currencies convert from PLN to EURO, USD and GBP and more.
 
 
 ![Converter](converter.png)
@@ -15,11 +15,14 @@ Here's a simple calculator that allows you to quickly convert popular currencies
 
 1. HTML
 1. CSS
-1. Alternative Box Model
-1. JS
-1. BEM
-1. ES6+
+1. Java Scirpt
+1. JSX
 1. React
+
+## API & Data Fetching
+API for retrieving data
+Async/Await for handling asynchronous code
+Axios for HTTP requests
 
 
 ## Available Scripts
