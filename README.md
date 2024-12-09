@@ -20,9 +20,9 @@ Here's a simple calculator that allows you to quickly convert currencies. Curren
 1. React
 
 ## API & Data Fetching
-API for retrieving data
-Async/Await for handling asynchronous code
-Axios for HTTP requests
+1. API for retrieving data
+1. Async/Await for handling asynchronous code
+1. Axios for HTTP requests
 
 
 ## Available Scripts
