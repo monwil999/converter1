@@ -6,7 +6,7 @@
 
 ## Introduction
 
-Here's a simple calculator that allows you to quickly convert currencies. Currencies convert from PLN to EURO, USD and GBP and more.
+Here's a simple calculator that allows you to quickly convert currencies. Currencies convert from PLN to EURO, USD, GBP and more.
 
 
 ![Converter](converter.png)
