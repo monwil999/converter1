@@ -1,25 +1,26 @@
 import React, { useState } from "react";
-import "./App.css";
-import { Form } from "./Form";
-import { currencies } from "./currencies";
+import Form from "./Form";
+import Clock from "./Clock";
 
-function App() {
+const App = () => {
   const [result, setResult] = useState();
 
-  const calculateResult = (currency, amount) => {
-    const rate = currencies.find(({ name }) => name === currency).rate;
-
+  const calculateResult = (currency, amount, rates) => {
+    const rate = rates[currency] || 0;
     setResult({
       sourceAmount: +amount,
-      targetAmount: amount / rate,
+      targetAmount: amount * rate,
       currency,
     });
   };
 
   return (
     <div className="app">
+      <Clock />
       <Form result={result} calculateResult={calculateResult} />
     </div>
   );
-}
+};
+
 export default App;
+
