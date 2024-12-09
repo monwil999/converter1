@@ -1,11 +1,15 @@
-import Form from "./Form";
+import React, { useState } from "react";
+import Form from "../Form";
 
 function App() {
-  return (
     <div className="app">
-      <Form />
+      <Clock />
+      <Form
+        calculateResult={calculateResult}
+        result={result}
+        ratesData={ratesData}
+      />
     </div>
-  );
-}
+};
 
 export default App;
