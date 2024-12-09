@@ -1,75 +1,115 @@
-import React, { useState, useEffect } from "react";
-import { currencies } from "../currencies";
+import React, { useState } from "react";
 import { Result } from "./Result";
 import { FormLabel, FormField, FormButton, FormFieldset, FormResult, FormLegend } from "./styled";
-import { ClockStyle } from "../Clock/styled";
+import { useRatesData } from "./useRatesData";
 
-export const Form = ({ calculateResult, result }) => {
-  const [currency, setCurrency] = useState(currencies[0].name);
-  const [amount, setAmount] = useState("");
-  const [currentDate, setCurrentDate] = useState(new Date());
+export const Form = () => {
+  const [amount, setAmount] = useState(""); 
+  const [currency, setCurrency] = useState("");
+  const [result, setResult] = useState(null); 
+  const { state, rates, error, date } = useRatesData();
+  console.log("Date in Form component:", date);
+  const calculateResult = (currency, amount) => {
+    if (!rates || !rates[currency]) {
+      console.error("Brak kursu dla wybranej waluty", currency);
+      return; //
+    }
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentDate(new Date());
-    }, 1000);
+    const rate = rates[currency]?.value;
 
-    return () => clearInterval(timer);
-  }, []);
-  const onSubmit = (event) => {
-    event.preventDefault();
+    if (!rate) {
+      console.error("Brak wartości kursu dla waluty:", currency);
+      return;
+    }
+
+    const parsedAmount = parseFloat(amount);
+
+    if (isNaN(parsedAmount)) {
+      alert("Proszę podać prawidłową kwotę");
+      return;
+    }
+
+    setResult({
+      sourceAmount: parsedAmount,
+      targetAmount: parsedAmount * rate,
+      currency,
+    });
+  };
+
+  const formatDate = (date) => {
+    if (!date) return "Brak daty";
+    return new Date(date).toLocaleString("pl-PL", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });    
+  };
+  console.log("Date przekazana do komponentu Form:", date);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    if (!amount || !currency) {
+      alert("Proszę uzupełnić wszystkie pola.");
+      return;
+    }
+
     calculateResult(currency, amount);
   };
-  const formatDate = (date) =>
-  date.toLocaleString("pl-PL", {
-    weekday: "long",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    day: "numeric",
-    month: "long",
-  });
+
+  if (state === "loading") {
+    return <p>Ładowanie danych kursów...</p>;
+  }
+
+  if (state === "error") {
+    return <p>Błąd: {error || "Nieznany błąd"}</p>;
+  }
+
+  if (!rates) {
+    return <p>Brak danych kursów.</p>;
+  }
+
   return (
-    <form className="form" onSubmit={onSubmit}>
-      Pola wymagane oznaczone są gwiazdką*.
+    <form onSubmit={onSubmit}>
       <FormFieldset>
-      <ClockStyle>
-          Dzisiaj jest: {formatDate(currentDate)}
-        </ClockStyle>
         <FormLegend>Kantor Walutowy</FormLegend>
+        <p>Data kursu: {formatDate(date)} </p>
         <p>
-          <FormLabel> Kwota w PLN* </FormLabel>
-          <input
+          <FormLabel>Kwota w PLN*</FormLabel>
+          <FormField
             value={amount}
             onChange={({ target }) => setAmount(target.value)}
-            className="form_field"
             type="number"
-            name="amount"
             min="1"
             step="any"
             required
           />
         </p>
         <p>
-          <FormLabel> Wybierz walutę </FormLabel>
+          <FormLabel>Wybierz walutę</FormLabel>
           <FormField
             as="select"
             value={currency}
             onChange={({ target }) => setCurrency(target.value)}
+            required
           >
-            {currencies.map((currency) => (
-              <option key={currency.name} value={currency.name}>
-                {currency.name}
+            <option value="">Wybierz walutę</option>
+            {Object.keys(rates).map((rateKey) => (
+              <option key={rateKey} value={rateKey}>
+                {rateKey}
               </option>
             ))}
           </FormField>
         </p>
         <p>
-          <FormButton>Przelicz</FormButton>
+          <FormButton disabled={state === "loading" || !amount || !currency}>Przelicz</FormButton>
         </p>
         <FormResult>
-          Otrzymasz:
-          <Result result={result} />
+          {result && <Result result={result} />}
         </FormResult>
       </FormFieldset>
     </form>
