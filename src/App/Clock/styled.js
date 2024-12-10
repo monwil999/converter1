@@ -5,5 +5,5 @@ export const ClockStyle = styled.div`
   font-family: monospace;
   font-size: 18px;
   text-align: center;
-  color: white;
+  color: grey;
 `;
